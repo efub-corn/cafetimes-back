@@ -27,9 +27,6 @@ public class User extends BaseEntity{
     private String nickname;
 
     @Column
-    private String name;
-
-    @Column
     private String email;
 
     @Column(columnDefinition = "TEXT")
@@ -40,13 +37,24 @@ public class User extends BaseEntity{
     private String role;
 
     @Builder
-    public User(Long kakaoId, String nickname, String name, String email, String image, Authority authority){
+    public User(Long kakaoId, String nickname, String email, String image, Authority authority){
         this.kakaoId = kakaoId;
         this.nickname = nickname;
-        this.name = name;
         this.email = email;
         this.image = image;
         this.role = authority.getValue();
     }
+
+    public User upadate(String nickname, String image){
+        this.nickname = nickname;
+        this.image = image;
+
+        return this;
+    }
+
+    public void updateRole(String role){
+        this.role = role;
+    }
+
 
 }
