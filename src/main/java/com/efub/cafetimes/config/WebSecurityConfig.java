@@ -36,7 +36,7 @@ public class WebSecurityConfig {
 
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .mvcMatchers("**/oauth/**", "/login", "/main", "/","/css/**","/images/**","/js/**").permitAll()
+                        .mvcMatchers("**/oauth2/**", "/login", "/main", "/","/css/**","/images/**","/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .logout()
@@ -44,7 +44,7 @@ public class WebSecurityConfig {
                 .oauth2Login()
                 .successHandler(successHandler)
                 .userInfoEndpoint()
-                .userService(oAuthUserService);
+                .userService(oAuthUserService); //succssHandler보다 먼저 실행됨.
 
 //        return http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class).build();
     return null;

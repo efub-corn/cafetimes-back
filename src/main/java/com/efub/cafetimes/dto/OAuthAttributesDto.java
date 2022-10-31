@@ -11,7 +11,7 @@ import java.util.Map;
 public class OAuthAttributesDto {
     private Map<String, Object> attributes;
     private Long kakaoId;
-    private String registrationId; //naver, google, kakao 구분
+    private String registrationId; //서비스 구분
     private String nameAttributeKey;
     private String nickname;
     private String email;
@@ -40,8 +40,8 @@ public class OAuthAttributesDto {
 
         return OAuthAttributesDto.builder()
                 .kakaoId((Long) attributes.get("id"))
-                .registrationId((String) registrationId)
-                .nameAttributeKey((String) userNameAttributeName)
+                .registrationId(registrationId)
+                .nameAttributeKey(userNameAttributeName)
                 .nickname((String) kakaoProfile.get("nickname"))
                 .email((String) kakaoAccount.get("email"))
                 .image((String) kakaoProfile.get("profile_image_url"))

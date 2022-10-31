@@ -13,10 +13,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.security.Provider;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
