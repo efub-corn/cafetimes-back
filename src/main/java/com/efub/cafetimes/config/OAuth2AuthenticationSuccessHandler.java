@@ -3,6 +3,7 @@ package com.efub.cafetimes.config;
 import com.efub.cafetimes.domain.User;
 import com.efub.cafetimes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
@@ -27,9 +29,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         User user = userRepository.findUserByKakaoId(oAuth2User.getAttribute("id"));
         String role = user.getRole();
 
+        log.info("Principal에서 꺼낸 OAuth2User = {}", oAuth2User);
+
         //로그인 성공 시 jwt 토큰 발행
         String accessToken = jwtTokenProvider.createAccessToken(oAuth2User.getAttribute("id").toString(), role);
         String refreshToken = jwtTokenProvider.createRefreshToken(oAuth2User.getAttribute("id").toString(), role);
+
+        log.info("{}", accessToken);
 
         response.addHeader("X-AUTH-TOKEN", accessToken);
         response.addHeader("REFRESH-TOKEN", refreshToken);

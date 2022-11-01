@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
 @Configuration
@@ -18,6 +19,7 @@ import org.springframework.web.cors.CorsUtils;
 public class WebSecurityConfig {
     private final OAuthUserService oAuthUserService;
     private final OAuth2AuthenticationSuccessHandler successHandler;
+    private final JwtTokenProvider jwtTokenProvider;
 
 //    @Bean
 //    public WebSecurityCustomizer configure() {
@@ -46,7 +48,6 @@ public class WebSecurityConfig {
                 .userInfoEndpoint()
                 .userService(oAuthUserService); //succssHandler보다 먼저 실행됨.
 
-//        return http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class).build();
-    return null;
+        return http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class).build();
     }
 }

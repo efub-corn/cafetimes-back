@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="user")
 public class User extends BaseEntity{
 
     @Id
@@ -19,7 +20,6 @@ public class User extends BaseEntity{
     private Long userId;
 
     @Column
-    @NotNull
     private Long kakaoId;
 
     @Column
@@ -27,6 +27,7 @@ public class User extends BaseEntity{
     private String nickname;
 
     @Column
+    @NotNull
     private String email;
 
     @Column(columnDefinition = "TEXT")
