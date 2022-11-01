@@ -42,7 +42,7 @@ public class OAuthUserService extends DefaultOAuth2UserService {
 
     private User saveOrUpdateUser(OAuthAttributesDto attributes){
         //회원가입 되어있지 않다면 가입 처리, 가입되어있다면 정보 업데이트&로그인 처리
-        User user = userRepository.findByKakaoId(attributes.getKakaoId());
+        User user = userRepository.findUserByKakaoId(attributes.getKakaoId());
 
         if(user==null){
             //회원가입
