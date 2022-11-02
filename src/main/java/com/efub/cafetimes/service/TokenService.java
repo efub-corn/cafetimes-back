@@ -4,6 +4,8 @@ import com.efub.cafetimes.config.JwtTokenProvider;
 import com.efub.cafetimes.domain.User;
 import com.efub.cafetimes.dto.RefreshTokenResponseDto;
 import com.efub.cafetimes.repository.UserRepository;
+import com.efub.cafetimes.util.errorutil.CustomException;
+import com.efub.cafetimes.util.errorutil.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,7 @@ public class TokenService {
 
         String refreshTokenInRedis = redisTemplate.opsForValue().get(user.getEmail());
         if (!refreshToken.equals(refreshTokenInRedis)) {
-            throw new CustomException(ErrorCode.REFRESH_TOKEN_DOESNT_MATCH);
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         //토큰 재발행 & redis 업데이트
