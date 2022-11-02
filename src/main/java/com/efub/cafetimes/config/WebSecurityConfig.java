@@ -38,7 +38,7 @@ public class WebSecurityConfig {
 
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .mvcMatchers("**/oauth2/**", "/login", "/main", "/","/css/**","/images/**","/js/**").permitAll()
+                        .mvcMatchers("**/oauth2/**", "/main", "/","/css/**","/images/**","/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .logout()
