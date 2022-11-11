@@ -1,6 +1,7 @@
 package com.efub.cafetimes.config;
 
 import com.efub.cafetimes.domain.User;
+import com.efub.cafetimes.domain.UserPrincipal;
 import com.efub.cafetimes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -25,14 +27,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-        OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
-        User user = userRepository.findUserByKakaoId(oAuth2User.getAttribute("id"));
+       // OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
 
-        log.info("Principal에서 꺼낸 OAuth2User = {}", oAuth2User);
+        log.info("Principal에서 꺼낸 OAuth2User = {}", userPrincipal);
 
         //로그인 성공 시 jwt 토큰 발행
-        String accessToken = jwtTokenProvider.createAccessToken(oAuth2User.getAttribute("id").toString(), user.getRole());
-        String refreshToken = jwtTokenProvider.createRefreshToken(oAuth2User.getAttribute("id").toString(), user.getRole());
+        String accessToken = jwtTokenProvider.createAccessToken(userPrincipal.getAttribute("email").toString(), userPrincipal.getAuthorities().stream().findFirst().get().getAuthority());
+        String refreshToken = jwtTokenProvider.createRefreshToken(userPrincipal.getAttribute("email").toString(), userPrincipal.getAuthorities().stream().findFirst().get().getAuthority());
 
         log.info("{}", accessToken);
 

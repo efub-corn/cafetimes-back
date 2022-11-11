@@ -1,5 +1,9 @@
 package com.efub.cafetimes.config;
 
+import com.efub.cafetimes.domain.User;
+import com.efub.cafetimes.domain.UserPrincipal;
+import com.efub.cafetimes.repository.UserRepository;
+import com.efub.cafetimes.service.OAuthUserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +25,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -65,8 +69,9 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        User user = userRepository.findUserByEmail(getUserPk(token));
+        UserPrincipal userPrincipal = UserPrincipal.create(user);
+        return new UsernamePasswordAuthenticationToken(userPrincipal, "", userPrincipal.getAuthorities());
     }
 
     // 토큰에서 회원 정보 추출

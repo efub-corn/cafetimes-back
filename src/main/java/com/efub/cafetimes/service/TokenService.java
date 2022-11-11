@@ -8,6 +8,7 @@ import com.efub.cafetimes.util.errorutil.CustomException;
 import com.efub.cafetimes.util.errorutil.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

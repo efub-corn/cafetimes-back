@@ -23,11 +23,11 @@ public class UserPrincipal implements UserDetails, OAuth2User {
      * OAuth2 로그인시 사용
      */
     public static UserPrincipal create(User user, Map<String, Object> attributes) {
-        return new UserPrincipal(user, List.of(() -> "ROLE_CUSTOMER"), attributes);
+        return new UserPrincipal(user, List.of(() -> user.getRole()), attributes);
     }
 
     public static UserPrincipal create(User user) {
-        return new UserPrincipal(user, List.of(() -> "ROLE_CUSTOMER"), new HashMap<>());
+        return new UserPrincipal(user, List.of(() -> user.getRole()), new HashMap<>());
     }
 
     @Override
