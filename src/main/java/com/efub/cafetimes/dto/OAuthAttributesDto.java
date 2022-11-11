@@ -4,10 +4,12 @@ import com.efub.cafetimes.config.Authority;
 import com.efub.cafetimes.domain.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Getter
+@NoArgsConstructor
 public class OAuthAttributesDto {
     private Map<String, Object> attributes;
     private Long kakaoId;
