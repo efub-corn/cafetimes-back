@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
+public interface SubscriptionRepository extends JpaRepository<Subscription, Long>, QuerydslPredicateExecutor<Subscription> {
 
     //쿼리 메소드 이용
     List<Subscription> findByMenu(String menu);
@@ -23,4 +25,5 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     @Query(value="select * from subscription i where i.subscription_detail like %:subscriptionDetail% order by i.price desc", nativeQuery = true)
     List<Subscription> findBySubscriptionDetailByNative(@Param("subscriptionDetail") String subscriptionDetail);
+
 }

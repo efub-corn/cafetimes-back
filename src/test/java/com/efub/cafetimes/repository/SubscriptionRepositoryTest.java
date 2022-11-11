@@ -4,6 +4,7 @@ import com.efub.cafetimes.constant.SubscriptionSellStatus;
 import com.efub.cafetimes.domain.Subscription;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -16,11 +17,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAQuery;
-//import com.efub.cafetimes.domain.QItem;
+import com.efub.cafetimes.domain.QSubscription;
+import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
+
+import com.querydsl.core.BooleanBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 class SubscriptionRepositoryTest {
+
+    @PersistenceContext
+    EntityManager em;
 
     @Autowired //빈 주입
     SubscriptionRepository subscriptionRepository;
@@ -120,6 +131,74 @@ class SubscriptionRepositoryTest {
         for(Subscription subscription : subscriptionList){
             System.out.println(subscription.toString());
         }
+    }
+
+    @Test
+    @DisplayName("Querydsl 조회 테스트1")
+    public void queryDslTest(){
+        this.createSubscriptionList();
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSubscription qSubscription = QSubscription.subscription;
+        JPAQuery<Subscription> query  = queryFactory.selectFrom(qSubscription)
+                .where(qSubscription.subscriptionSellStatus.eq(SubscriptionSellStatus.SELL))
+                .where(qSubscription.subscriptionDetail.like("%" + "테스트 구독권 상세 설명" + "%"))
+                .orderBy(qSubscription.price.desc());
+
+        List<Subscription> subscriptionList = query.fetch();
+
+        for(Subscription subscription : subscriptionList){
+            System.out.println(subscription.toString());
+        }
+    }
+
+    public void createSubscriptionList2(){
+        for(int i=1; i<=5; i++){
+            Subscription subscription = new Subscription();
+            subscription.setMenu("테스트 구독권"+i);
+            subscription.setPrice(100000+i);
+            subscription.setCurrentAmount(23);
+            subscription.setTotalAmount(40);
+            subscription.setTerm(2);
+            subscription.setSubscriptionDetail("테스트 구독권 상세 설명"+i);
+            subscription.setSubscriptionSellStatus(SubscriptionSellStatus.SELL);
+            subscription.setStockNumber(100);
+            subscription.setCreatedAt(LocalDateTime.now());
+            subscription.setUpdateTime(LocalDateTime.now());
+            subscriptionRepository.save(subscription);
+        }
+
+        for(int i=6; i<=10; i++){
+            Subscription subscription = new Subscription();
+            subscription.setMenu("테스트 구독권"+i);
+            subscription.setPrice(100000+i);
+            subscription.setCurrentAmount(23);
+            subscription.setTotalAmount(40);
+            subscription.setTerm(2);
+            subscription.setSubscriptionDetail("테스트 구독권 상세 설명"+i);
+            subscription.setSubscriptionSellStatus(SubscriptionSellStatus.SOLD_OUT);
+            subscription.setStockNumber(100);
+            subscription.setCreatedAt(LocalDateTime.now());
+            subscription.setUpdateTime(LocalDateTime.now());
+            subscriptionRepository.save(subscription);
+        }
+    }
+
+    @Test
+    @DisplayName("상품 Querydsl 조회 테스트 2")
+    public void queryDslTest2(){
+        this.createSubscriptionList2();
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        QSubscription subscription = QSubscription.subscription;
+
+        String subscriptionDetail = "테스트 구독권 상세 설명";
+        int price = 100003;
+        String subscriptionSellStat = "SELL";
+
+        booleanBuilder.and(subscription.subscriptionDetail.like("%" + subscriptionDetail+"%"));
+        booleanBuilder.and(subscription.price.gt(price));
+
+
     }
 
 
