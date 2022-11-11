@@ -1,6 +1,7 @@
 package com.efub.cafetimes.service;
 
 import com.efub.cafetimes.domain.User;
+import com.efub.cafetimes.domain.UserPrincipal;
 import com.efub.cafetimes.dto.OAuthAttributesDto;
 import com.efub.cafetimes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,18 +28,19 @@ public class OAuthUserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // accessToken으로 서드파티에 요청해서 사용자 정보를 얻어옴
-        OAuth2User oAuth2User = super.loadUser(userRequest);
+        Map<String, Object> oAuth2UserAttributes = super.loadUser(userRequest).getAttributes();
 
         //현재 진행 중인 서비스 구분 코드
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         //로그인 진행 시 키가 되는 pk값
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
-        OAuthAttributesDto attributes = OAuthAttributesDto.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        OAuthAttributesDto attributes = OAuthAttributesDto.of(registrationId, userNameAttributeName, oAuth2UserAttributes);
 
         User user = saveOrUpdateUser(attributes);
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRole())), attributes.getAttributes(), attributes.getNameAttributeKey());
+        //return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRole())), attributes.getAttributes(), attributes.getNameAttributeKey());
+        return UserPrincipal.create(user, oAuth2UserAttributes);
     }
 
     private User saveOrUpdateUser(OAuthAttributesDto attributes){

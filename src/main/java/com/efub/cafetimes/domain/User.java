@@ -6,14 +6,19 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="user")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +42,15 @@ public class User extends BaseEntity{
     @NotNull
     private String role;
 
+    @Column
+    private String password;
+
     @Builder
-    public User(Long kakaoId, String nickname, String email, String image, Authority authority){
+    public User(Long kakaoId, String nickname, String email, String password, String image, Authority authority){
         this.kakaoId = kakaoId;
         this.nickname = nickname;
         this.email = email;
+        this.password = password;
         this.image = image;
         this.role = authority.getValue();
     }
@@ -56,6 +65,4 @@ public class User extends BaseEntity{
     public void updateRole(String role){
         this.role = role;
     }
-
-
 }

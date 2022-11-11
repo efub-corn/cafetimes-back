@@ -27,13 +27,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
         User user = userRepository.findUserByKakaoId(oAuth2User.getAttribute("id"));
-        String role = user.getRole();
 
         log.info("Principal에서 꺼낸 OAuth2User = {}", oAuth2User);
 
         //로그인 성공 시 jwt 토큰 발행
-        String accessToken = jwtTokenProvider.createAccessToken(oAuth2User.getAttribute("id").toString(), role);
-        String refreshToken = jwtTokenProvider.createRefreshToken(oAuth2User.getAttribute("id").toString(), role);
+        String accessToken = jwtTokenProvider.createAccessToken(oAuth2User.getAttribute("id").toString(), user.getRole());
+        String refreshToken = jwtTokenProvider.createRefreshToken(oAuth2User.getAttribute("id").toString(), user.getRole());
 
         log.info("{}", accessToken);
 
@@ -42,6 +41,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String redirectUrl = UriComponentsBuilder.fromUriString("https://localhost:3000/oauth2/redirect")
                 .build().toUriString();
+
+        if (response.isCommitted()) {
+            logger.debug("응답이 이미 커밋된 상태입니다. " + redirectUrl + "로 리다이렉트하도록 바꿀 수 없습니다.");
+            return;
+        }
+
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }
