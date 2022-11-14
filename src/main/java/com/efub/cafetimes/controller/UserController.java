@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/account/profile")
     public UserResponseDto userAccountDetails(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        //return userService.findUser();
+        return userService.findUser();
     }
 
 
