@@ -2,6 +2,7 @@ package com.efub.cafetimes.controller;
 
 import com.efub.cafetimes.domain.User;
 import com.efub.cafetimes.domain.UserPrincipal;
+import com.efub.cafetimes.dto.DeleteResponseDto;
 import com.efub.cafetimes.dto.UserResponseDto;
 import com.efub.cafetimes.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class UserController {
     }
 
     @DeleteMapping("/account")
-    public String deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-
+    public DeleteResponseDto deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        userService.deleteUser(userPrincipal.getId());
+        return new DeleteResponseDto("탈퇴 되었습니다.");
     }
 }

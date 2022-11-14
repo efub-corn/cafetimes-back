@@ -22,4 +22,10 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
+    public void deleteUser(Long userId){
+        userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        userRepository.deleteById(userId);
+    }
 }
