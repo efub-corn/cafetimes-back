@@ -22,5 +22,4 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
-    public UserResponseDto findAccountUser()
 }

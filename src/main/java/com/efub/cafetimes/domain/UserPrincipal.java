@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -13,35 +14,40 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 public class UserPrincipal implements UserDetails, OAuth2User {
-    private User user;
+    private Long id;
+    private String email;
     private List<GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(User user, List<GrantedAuthority> authorities, Map<String, Object> attributes) {
-        this.user = user;
+    public UserPrincipal(Long id, String email, List<GrantedAuthority> authorities) {
+        this.id = id;
+        this.email = email;
         this.authorities = authorities;
-        this.attributes = attributes;
     }
 
     /**
      * OAuth2 로그인시 사용
      */
     public static UserPrincipal create(User user, Map<String, Object> attributes) {
-        return new UserPrincipal(user, List.of(() -> user.getRole()), attributes);
+        UserPrincipal userPrincipal = create(user);
+        userPrincipal.setAttributes(attributes);
+        return userPrincipal;
     }
 
     public static UserPrincipal create(User user) {
-        return new UserPrincipal(user, List.of(() -> user.getRole()), new HashMap<>());
+        List<GrantedAuthority> authorities = Collections.
+                singletonList(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+        return new UserPrincipal(user.getUserId(), user.getEmail(), authorities);
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return String.valueOf(user.getEmail());
+        return email;
     }
 
     @Override
@@ -83,6 +89,11 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return String.valueOf(user.getUserId());
+        return String.valueOf(id);
+    }
+
+
+    public void setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
     }
 }

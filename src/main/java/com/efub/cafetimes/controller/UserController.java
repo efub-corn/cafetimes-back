@@ -21,12 +21,11 @@ public class UserController {
 
     @GetMapping("/account/profile")
     public UserResponseDto userAccountDetails(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return userService.findUser();
+        return userService.findUser(userPrincipal.getId());
     }
 
-
     @DeleteMapping("/account")
-    public String deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal){
+    public String deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
     }
 }

@@ -68,11 +68,22 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        User user = userRepository.findByEmail(getUserPk(token));
-        UserPrincipal userPrincipal = UserPrincipal.create(user);
-        return new UsernamePasswordAuthenticationToken(userPrincipal, "", userPrincipal.getAuthorities());
+        Claims claims = parseClaims(token);
+        List<GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
+                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
+        UserPrincipal principal = new UserPrincipal(Long.valueOf(claims.getSubject()), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
     }
 
+    private Claims parseClaims(String token) {
+        try {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
 
     // 토큰에서 회원 정보 추출
     public String getUserPk(String token) {
