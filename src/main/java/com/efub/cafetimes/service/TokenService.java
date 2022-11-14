@@ -24,7 +24,7 @@ public class TokenService {
     @Transactional
     public void updateRefreshToken(String email, String refreshToken){
         // Redis에 저장 - 만료 시간 설정을 통해 자동 삭제 처리
-        User user = userRepository.findUserByEmail(email);
+        User user = userRepository.findByEmail(email);
         redisTemplate.opsForValue().set(
                 email,
                 refreshToken,
@@ -35,7 +35,7 @@ public class TokenService {
 
     @Transactional
     public RefreshTokenResponseDto refreshToken(String email, String refreshToken) {
-        User user = userRepository.findUserByEmail(email);
+        User user = userRepository.findByEmail(email);
 
         //refresh token 검증
         if (!jwtTokenProvider.validateToken(refreshToken)) {

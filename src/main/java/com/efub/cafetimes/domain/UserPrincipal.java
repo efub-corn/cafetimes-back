@@ -10,29 +10,35 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
 
-@Getter
 @NoArgsConstructor
+@Getter
 public class UserPrincipal implements UserDetails, OAuth2User {
     private User user;
+    private Long id;
     private List<GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    private UserPrincipal(User user, List<GrantedAuthority> authorities,
-                          Map<String, Object> attributes) {
+    public UserPrincipal(User user, Long id, List<GrantedAuthority> authorities, Map<String, Object> attributes) {
         this.user = user;
+        this.id = id;
         this.authorities = authorities;
         this.attributes = attributes;
+    }
+
+    public UserPrincipal(Long id, List<GrantedAuthority> authorities) {
+        this.id = id;
+        this.authorities = authorities;
     }
 
     /**
      * OAuth2 로그인시 사용
      */
     public static UserPrincipal create(User user, Map<String, Object> attributes) {
-        return new UserPrincipal(user, List.of(() -> user.getRole()), attributes);
+        return new UserPrincipal(user, user.getUserId(), List.of(() -> user.getRole()), attributes);
     }
 
     public static UserPrincipal create(User user) {
-        return new UserPrincipal(user, List.of(() -> user.getRole()), new HashMap<>());
+        return new UserPrincipal(user, user.getUserId(), List.of(() -> user.getRole()), new HashMap<>());
     }
 
     @Override
@@ -73,12 +79,17 @@ public class UserPrincipal implements UserDetails, OAuth2User {
     }
 
     @Override
+    public Map<String, Object> getAttributes() {
+        return Collections.unmodifiableMap(attributes);
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.unmodifiableList(authorities);
     }
 
     @Override
     public String getName() {
-        return String.valueOf(user.getEmail());
+        return String.valueOf(user.getUserId());
     }
 }

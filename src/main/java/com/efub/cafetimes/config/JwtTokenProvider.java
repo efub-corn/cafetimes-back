@@ -4,22 +4,21 @@ import com.efub.cafetimes.domain.User;
 import com.efub.cafetimes.domain.UserPrincipal;
 import com.efub.cafetimes.repository.UserRepository;
 import com.efub.cafetimes.service.OAuthUserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -69,9 +68,21 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        User user = userRepository.findUserByEmail(getUserPk(token));
-        UserPrincipal userPrincipal = UserPrincipal.create(user);
-        return new UsernamePasswordAuthenticationToken(userPrincipal, "", userPrincipal.getAuthorities());
+        Claims claims = parseClaims(token);
+        List<GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
+                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
+        UserPrincipal principal = new UserPrincipal(Long.parseLong(claims.getSubject()), authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
+    public Claims parseClaims(String token){
+        try {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
     }
 
     // 토큰에서 회원 정보 추출

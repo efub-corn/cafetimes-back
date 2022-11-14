@@ -27,16 +27,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-       // OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
-        UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
+        OAuth2User userPrincipal = (OAuth2User)authentication.getPrincipal();
 
         log.info("userPrincipal attributes = {}", userPrincipal.getAttributes());
 
         //로그인 성공 시 jwt 토큰 발행
-        String accessToken = jwtTokenProvider.createAccessToken(userPrincipal.getUsername(), userPrincipal.getAuthorities().stream().findFirst().get().getAuthority());
-        String refreshToken = jwtTokenProvider.createRefreshToken(userPrincipal.getUsername(), userPrincipal.getAuthorities().stream().findFirst().get().getAuthority());
+        String accessToken = jwtTokenProvider.createAccessToken(userPrincipal.getName(), userPrincipal.getAuthorities().stream().findFirst().get().getAuthority());
+        String refreshToken = jwtTokenProvider.createRefreshToken(userPrincipal.getName(), userPrincipal.getAuthorities().stream().findFirst().get().getAuthority());
 
         log.info("{}", accessToken);
+        log.info("{}", refreshToken);
 
         response.addHeader("X-AUTH-TOKEN", accessToken);
         response.addHeader("REFRESH-TOKEN", refreshToken);
