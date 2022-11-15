@@ -62,7 +62,7 @@ public class User extends BaseEntity {
         return this;
     }
 
-    public void updateRole(String role){
-        this.role = role;
+    public void updateRole(Authority authority){
+        this.role = authority.getValue();
     }
 }
