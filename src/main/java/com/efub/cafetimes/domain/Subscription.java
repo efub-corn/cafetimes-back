@@ -2,6 +2,7 @@ package com.efub.cafetimes.domain;
 
 import com.efub.cafetimes.constant.SubscriptionSellStatus;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -35,28 +36,26 @@ public class Subscription {
     private String menu; //구독권명
 
     @Column(name = "price", nullable = false)
-    private int price; //가격
+    private Integer price; //가격
 
     @Column(nullable = false)
-    private int currentAmount; //현재 구독권 수량
+    private Integer currentAmount; //현재 구독권 수량
 
     @Column(nullable = false)
-    private int totalAmount; //총 구독권 수량
+    private Integer totalAmount; //총 구독권 수량
 
     @Column(nullable = false)
-    private int term; //구독 기한(month 단위)
-
-    @Column(nullable = false)
-    private int stockNumber; //재고 수량
+    private Integer term; //구독 기한(month 단위)
 
     @Lob
     @Column(nullable = false)
     private String subscriptionDetail; //구독권 상세 설명
 
-    @Enumerated(EnumType.STRING)
-    private SubscriptionSellStatus subscriptionSellStatus; //구독권 판매 상태
+    /*@Enumerated(EnumType.STRING)
+    private SubscriptionSellStatus subscriptionSellStatus; //구독권 판매 상태*/
 
     private LocalDateTime createdAt; //구독 날짜
 
     private LocalDateTime updateTime; //수정 시간
+
 }
