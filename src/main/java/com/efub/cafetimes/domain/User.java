@@ -20,9 +20,9 @@ import java.util.Collections;
 @Table(name="user")
 public class User extends BaseEntity {
 
-    @Id
+    @Id @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @Column
     private Long kakaoId;
