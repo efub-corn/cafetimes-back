@@ -25,24 +25,25 @@ public class Order {
     private LocalDateTime pickupDate;
 
     @Column
+    @NonNull
+    private LocalDateTime pickupTime;
+
+    @Column
     private Boolean isIce;
 
-    @Column
-    private Boolean hasMilk;
-
-    @Column
-    private Boolean hasCream;
+    @Column(columnDefinition = "TEXT")
+    private String requestInfo;
 
     @Column
     private Boolean isDone;
 
     @Builder
-    public Order(Subscription subscription, LocalDateTime pickupDate, Boolean isIce, Boolean hasMilk, Boolean hasCream, Boolean isDone){
+    public Order(Subscription subscription, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo, Boolean isDone){
         this.subscription = subscription;
         this.pickupDate = pickupDate;
+        this.pickupTime = pickupTime;
         this.isIce = isIce;
-        this.hasMilk = hasMilk;
-        this.hasCream = hasCream;
+        this.requestInfo = requestInfo;
         this.isDone = isDone;
     }
 
