@@ -55,7 +55,7 @@ public class User extends BaseEntity {
         this.role = authority.getValue();
     }
 
-    public User upadate(String nickname, String image){
+    public User update(String nickname, String image){
         this.nickname = nickname;
         this.image = image;
 
