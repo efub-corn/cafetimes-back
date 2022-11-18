@@ -47,7 +47,7 @@ public class OrderService {
 
         cafes.stream().forEach(
                 cafe -> {
-                    List<Order> orderList = orderRepository.findByCafe(cafe);
+                    List<Order> orderList = orderRepository.findByCafeId(cafe.getId());
                     for(Order order : orderList) {
                         orders.add(new OrderResponseDto(order));
 

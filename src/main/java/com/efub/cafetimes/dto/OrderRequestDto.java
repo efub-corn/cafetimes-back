@@ -11,14 +11,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OrderRequestDto {
     private Long subscriptionId;
+    private Long cafeId;
     private LocalDateTime pickupDate;
     private LocalDateTime pickupTime;
     private Boolean isIce;
     private String requestInfo;
 
     @Builder
-    public OrderRequestDto(Long subscriptionId, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo){
+    public OrderRequestDto(Long subscriptionId, Long cafeId, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo){
         this.subscriptionId = subscriptionId;
+        this.cafeId = cafeId;
         this.pickupDate = pickupDate;
         this.pickupTime = pickupTime;
         this.isIce = isIce;

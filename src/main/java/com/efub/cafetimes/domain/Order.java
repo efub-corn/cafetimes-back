@@ -1,5 +1,6 @@
 package com.efub.cafetimes.domain;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,16 +17,19 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @NonNull
+    @NotNull
     @JoinColumn(name="subscription_id")
     private Subscription subscription;
 
     @Column
-    @NonNull
+    private Long cafeId;
+
+    @Column
+    @NotNull
     private LocalDateTime pickupDate;
 
     @Column
-    @NonNull
+    @NotNull
     private LocalDateTime pickupTime;
 
     @Column
@@ -38,8 +42,9 @@ public class Order {
     private Boolean isDone;
 
     @Builder
-    public Order(Subscription subscription, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo, Boolean isDone){
+    public Order(Subscription subscription, Long cafeId, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo, Boolean isDone){
         this.subscription = subscription;
+        this.cafeId = cafeId;
         this.pickupDate = pickupDate;
         this.pickupTime = pickupTime;
         this.isIce = isIce;

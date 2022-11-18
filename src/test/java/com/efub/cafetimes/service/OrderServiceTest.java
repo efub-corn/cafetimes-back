@@ -90,7 +90,7 @@ class OrderServiceTest {
     @Test
     @DisplayName("구독권 사용해서 주문하기 성공 테스트")
     void order() {
-        Order order = new Order(subscription, LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
+        Order order = new Order(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
 
         //given
         OrderRequestDto orderRequestDto = OrderRequestDto.builder()
@@ -119,8 +119,8 @@ class OrderServiceTest {
         //given
         List<Order> list = new ArrayList<>();
         List<Cafe> cafes = new ArrayList<>();
-        Order order1 = new Order(subscription, LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
-        Order order2 = new Order(subscription, LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
+        Order order1 = new Order(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
+        Order order2 = new Order(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
         list.add(order1);
         list.add(order2);
         cafes.add(cafe1);
@@ -129,7 +129,7 @@ class OrderServiceTest {
         // mocking
         when(userRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
         when(cafeRepository.findByOwner(any(User.class))).thenReturn(cafes);
-        when(orderRepository.findByCafe(any(Cafe.class))).thenReturn(list);
+        when(orderRepository.findByCafeId(cafe1.getId())).thenReturn(list);
 
         //when
         OrderListDto orders = orderService.findOrders(customer.getId());
