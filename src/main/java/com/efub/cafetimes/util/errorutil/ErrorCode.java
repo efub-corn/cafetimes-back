@@ -16,6 +16,7 @@ public enum ErrorCode {
 
     //400 BAD_REQUEST
     INVALID_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다."),
+    INVALID_USE_OF_SUBSCRIPTION(BAD_REQUEST, "구독권을 사용할 수 없습니다.")
     ;
 
     private final HttpStatus httpStatus;

@@ -10,11 +10,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OrderResponseDto {
     private String cafeName;
+    private String userName;
     private String menu;
     private LocalDateTime pickupDate;
 
     public OrderResponseDto(Order order){
         this.cafeName = order.getSubscription().getCafe().getCafeName();
+        this.userName = order.getSubscription().getUser().getNickname();
         this.menu = order.getSubscription().getMenu();
         this.pickupDate = order.getPickupDate();
     }

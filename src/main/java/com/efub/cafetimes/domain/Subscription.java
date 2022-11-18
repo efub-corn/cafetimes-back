@@ -1,5 +1,7 @@
 package com.efub.cafetimes.domain;
 
+import com.efub.cafetimes.util.errorutil.CustomException;
+import com.efub.cafetimes.util.errorutil.ErrorCode;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -57,6 +59,13 @@ public class Subscription {
         this.currentCnt = currentCnt;
         this.totalCnt = totalCnt;
         this.expirationDate = expirationDate;
+    }
+
+    public void minusCurrentCnt(Integer currentCnt){
+        if(currentCnt <= 0){
+            throw new CustomException(ErrorCode.INVALID_USE_OF_SUBSCRIPTION);
+        }
+        this.currentCnt = currentCnt - 1;
     }
 
 }
