@@ -4,6 +4,7 @@ import com.efub.cafetimes.domain.Cafe;
 import com.efub.cafetimes.domain.Event;
 import com.efub.cafetimes.domain.Subscription;
 import com.efub.cafetimes.domain.User;
+import com.efub.cafetimes.dto.EventDetailDto;
 import com.efub.cafetimes.dto.EventListDto;
 import com.efub.cafetimes.dto.EventRequestDto;
 import com.efub.cafetimes.dto.EventResponseDto;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +59,17 @@ public class EventService {
         return new EventListDto(events);
     }
 
+    public EventDetailDto findOrderDetail(Long eventId) {
+        Event event = findEventEntity(eventId);
+        return new EventDetailDto(event.getIsIce(), event.getRequestInfo());
+    }
+
+    @Transactional
+    public void updateEventStatus(Long eventId){
+        Event event = findEventEntity(eventId);
+        event.updateDoneStatus(true);
+    }
+
     private Event toOrderEntity(EventRequestDto eventRequestDto){
         Subscription subscription = findSubscriptionEntity(eventRequestDto.getSubscriptionId());
         return com.efub.cafetimes.domain.Event.builder()
@@ -76,5 +89,10 @@ public class EventService {
     private User findUserEntity(Long userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    private Event findEventEntity(Long eventId){
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
     }
 }

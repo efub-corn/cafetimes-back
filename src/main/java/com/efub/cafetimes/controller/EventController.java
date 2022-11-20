@@ -1,6 +1,7 @@
 package com.efub.cafetimes.controller;
 
 import com.efub.cafetimes.domain.UserPrincipal;
+import com.efub.cafetimes.dto.EventDetailDto;
 import com.efub.cafetimes.dto.GeneralResponseDto;
 import com.efub.cafetimes.dto.EventListDto;
 import com.efub.cafetimes.dto.EventRequestDto;
@@ -21,9 +22,20 @@ public class EventController {
         return new GeneralResponseDto("주문 완료되었습니다.");
     }
 
-    @GetMapping("/{cafeId}")
-    public EventListDto events(@AuthenticationPrincipal UserPrincipal userPrincipal){
+    @GetMapping()
+    public EventListDto orders(@AuthenticationPrincipal UserPrincipal userPrincipal){
         return eventService.findOrders(userPrincipal.getId());
+    }
+
+    @GetMapping("/{eventId}")
+    public EventDetailDto orderDetails(@PathVariable Long eventId){
+        return eventService.findOrderDetail(eventId);
+    }
+
+    @GetMapping("/{eventId}/call")
+    public GeneralResponseDto call(@PathVariable Long eventId){
+        eventService.updateEventStatus(eventId);
+        return new GeneralResponseDto("음료가 완성되었습니다.");
     }
 
 }

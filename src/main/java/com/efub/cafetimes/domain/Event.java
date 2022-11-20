@@ -52,6 +52,10 @@ public class Event {
         this.isDone = isDone;
     }
 
+    public void updateDoneStatus(Boolean isDone){
+        this.isDone = isDone;
+    }
+
     @PrePersist
     public void setDefaultValues(){
         this.isDone = this.isDone == null ? false : this.isDone;
