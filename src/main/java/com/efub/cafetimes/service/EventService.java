@@ -1,19 +1,18 @@
 package com.efub.cafetimes.service;
 
 import com.efub.cafetimes.domain.Cafe;
-import com.efub.cafetimes.domain.Order;
+import com.efub.cafetimes.domain.Event;
 import com.efub.cafetimes.domain.Subscription;
 import com.efub.cafetimes.domain.User;
-import com.efub.cafetimes.dto.OrderListDto;
-import com.efub.cafetimes.dto.OrderRequestDto;
-import com.efub.cafetimes.dto.OrderResponseDto;
+import com.efub.cafetimes.dto.EventListDto;
+import com.efub.cafetimes.dto.EventRequestDto;
+import com.efub.cafetimes.dto.EventResponseDto;
 import com.efub.cafetimes.repository.CafeRepository;
-import com.efub.cafetimes.repository.OrderRepository;
+import com.efub.cafetimes.repository.EventRepository;
 import com.efub.cafetimes.repository.SubscriptionRepository;
 import com.efub.cafetimes.repository.UserRepository;
 import com.efub.cafetimes.util.errorutil.CustomException;
 import com.efub.cafetimes.util.errorutil.ErrorCode;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,49 +22,49 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class EventService {
     private final SubscriptionRepository subscriptionRepository;
-    private final OrderRepository orderRepository;
+    private final EventRepository eventRepository;
     private final CafeRepository cafeRepository;
     private final UserRepository userRepository;
 
     //주문하기
     @Transactional
-    public void order(OrderRequestDto orderRequestDto){
+    public void order(EventRequestDto eventRequestDto){
         //해당 subscription count 차감
-        Subscription subscription = findSubscriptionEntity(orderRequestDto.getSubscriptionId());
+        Subscription subscription = findSubscriptionEntity(eventRequestDto.getSubscriptionId());
         subscription.minusCurrentCnt(subscription.getCurrentCnt());
 
-        Order order = orderRepository.save(toOrderEntity(orderRequestDto));
+        Event event = eventRepository.save(toOrderEntity(eventRequestDto));
     }
 
-    //사장님이 주문 리스트 조회
-    public OrderListDto findOrders(Long userId){
+    //사장님 카페 별 주문 리스트 조회
+    public EventListDto findOrders(Long userId){
         //사장님의 카페에 해당하는 주문들에 대해서
-        List<OrderResponseDto> orders = new ArrayList<>();
+        List<EventResponseDto> events = new ArrayList<>();
         List<Cafe> cafes = cafeRepository.findByOwner(findUserEntity(userId));
 
         cafes.stream().forEach(
                 cafe -> {
-                    List<Order> orderList = orderRepository.findByCafeId(cafe.getId());
-                    for(Order order : orderList) {
-                        orders.add(new OrderResponseDto(order));
+                    List<Event> eventList = eventRepository.findByCafeId(cafe.getId());
+                    for(Event event : eventList) {
+                        events.add(new EventResponseDto(event));
 
                     }
                 }
         );
 
-        return new OrderListDto(orders);
+        return new EventListDto(events);
     }
 
-    private Order toOrderEntity(OrderRequestDto orderRequestDto){
-        Subscription subscription = findSubscriptionEntity(orderRequestDto.getSubscriptionId());
-        return Order.builder()
+    private Event toOrderEntity(EventRequestDto eventRequestDto){
+        Subscription subscription = findSubscriptionEntity(eventRequestDto.getSubscriptionId());
+        return com.efub.cafetimes.domain.Event.builder()
                 .subscription(subscription)
-                .pickupDate(orderRequestDto.getPickupDate())
-                .pickupTime(orderRequestDto.getPickupTime())
-                .isIce(orderRequestDto.getIsIce())
-                .requestInfo(orderRequestDto.getRequestInfo())
+                .pickupDate(eventRequestDto.getPickupDate())
+                .pickupTime(eventRequestDto.getPickupTime())
+                .isIce(eventRequestDto.getIsIce())
+                .requestInfo(eventRequestDto.getRequestInfo())
                 .build();
     }
 

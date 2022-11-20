@@ -8,11 +8,11 @@ import java.util.List;
 
 @NoArgsConstructor
 @Getter
-public class OrderListDto {
-    private List<OrderResponseDto> orderList;
+public class EventListDto {
+    private List<EventResponseDto> orderList;
 
     @Builder
-    public OrderListDto(List<OrderResponseDto> orderList){
+    public EventListDto(List<EventResponseDto> orderList){
         this.orderList = orderList;
     }
 }

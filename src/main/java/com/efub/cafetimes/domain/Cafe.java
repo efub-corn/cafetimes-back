@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="cafe")
-public class Cafe extends BaseEntity{
+public class Cafe {
     @Id @Column(name="cafe_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

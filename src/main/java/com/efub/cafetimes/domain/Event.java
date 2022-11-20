@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="order")
-public class Order {
+@Table(name="event")
+public class Event {
     @Id
-    @Column(name="order_id")
+    @Column(name="event_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -42,7 +42,7 @@ public class Order {
     private Boolean isDone;
 
     @Builder
-    public Order(Subscription subscription, Long cafeId, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo, Boolean isDone){
+    public Event(Subscription subscription, Long cafeId, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo, Boolean isDone){
         this.subscription = subscription;
         this.cafeId = cafeId;
         this.pickupDate = pickupDate;
