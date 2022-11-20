@@ -5,38 +5,38 @@ import com.efub.cafetimes.domain.Cafe;
 import com.efub.cafetimes.domain.Event;
 import com.efub.cafetimes.domain.Subscription;
 import com.efub.cafetimes.domain.User;
-import com.efub.cafetimes.dto.EventDetailDto;
-import com.efub.cafetimes.dto.EventListDto;
-import com.efub.cafetimes.dto.EventRequestDto;
-import com.efub.cafetimes.dto.EventResponseDto;
+import com.efub.cafetimes.dto.*;
 import com.efub.cafetimes.service.EventService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(EventController.class)
+@MockBean(JpaMetamodelMappingContext.class)
+@AutoConfigureMockMvc(addFilters = false)
 class EventControllerTest {
 
     @Autowired
@@ -89,29 +89,12 @@ class EventControllerTest {
         EventRequestDto eventRequestDto = new EventRequestDto(1L, 1L, LocalDateTime.now(), LocalDateTime.now(), true, "iceice");
 
         //when, then
-        mvc.perform(post("/")
+        mvc.perform(post("/events")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(eventRequestDto)))
-                .andExpect(status().is2xxSuccessful())
+                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(eventRequestDto)))
+                .andExpect(status().isOk())
                 .andDo(print());
 
-    }
-
-    @Test
-    @DisplayName("사장님 주문 내역 조회하기 성공")
-    void orders() throws Exception {
-        //given
-        Event event = new Event(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
-
-        EventListDto list = new EventListDto(List.of(new EventResponseDto(event)
-                , new EventResponseDto(event)));
-        Mockito.when(eventService.findOrders(owner.getId())).thenReturn(list);
-
-        //when, then
-        mvc.perform(get("/orders").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("cafe1"));
     }
 
     @Test
@@ -124,10 +107,9 @@ class EventControllerTest {
         Mockito.when(eventService.findOrderDetail(event.getId())).thenReturn(response);
 
         //when, then
-        mvc.perform(get("/orders/1").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
+        mvc.perform(get("/events/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(true));
+                .andDo(print());
     }
 
     @Test
