@@ -30,7 +30,7 @@ public class CafeController {
     ResponseEntity<?> cafeDetail(@PathVariable("cafeId") Long cafeId) {
         return new ResponseEntity<>(cafeService.getcafeDetail(cafeId), HttpStatus.OK);
     }
-    @GetMapping("/stores/myCafe")
+    @GetMapping("/cafes/myCafe")
     ResponseEntity<?> myStoreDetail(HttpServletRequest httpRequest) {
         SessionUserDTO sessionUser = jwtTokenProvider.getUserInfoByToken(httpRequest);
         return new ResponseEntity<>(cafeService.getCafeDetailByOwner(sessionUser.getUserId()), HttpStatus.OK);
