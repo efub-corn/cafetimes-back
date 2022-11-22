@@ -1,7 +1,7 @@
 package com.efub.cafetimes.dto;
 
 import com.efub.cafetimes.constant.SubscriptionSellStatus;
-import com.efub.cafetimes.domain.Store;
+import com.efub.cafetimes.domain.Cafe;
 import com.efub.cafetimes.domain.User;
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 public class SubscriptionDto {
     private Long subscriptionId; //구독권 코드
-    private Store cafe;
+    private Cafe cafe;
     private String menu;
     private Integer price;
     private Integer currentAmount; //현재 구독권 수량

@@ -29,8 +29,8 @@ public class Subscription {
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name = "storeId")
-    private Store cafe;
+    @JoinColumn(name = "cafeId")
+    private Cafe cafe;
 
     @Column(nullable = false, length = 50)
     private String menu; //구독권명

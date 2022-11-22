@@ -15,7 +15,8 @@ import javax.persistence.*;
 public class Cafe extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cafeId;
+    @Column(name="cafeId")
+    private Long id;
 
     @ManyToOne
     @NotNull
