@@ -11,11 +11,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="store")
-public class Store extends BaseEntity{
+@Table(name="cafe")
+public class Cafe extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storeId;
+    @Column(name="cafeId")
+    private Long id;
 
     @ManyToOne
     @NotNull
@@ -24,7 +25,7 @@ public class Store extends BaseEntity{
 
     @Column(columnDefinition = "TEXT")
     @NotNull
-    private String storeName;
+    private String cafeName;
 
     @Column(columnDefinition = "TEXT")
     @NotNull
@@ -43,9 +44,9 @@ public class Store extends BaseEntity{
     private Integer subscriptionCount;
 
     @Builder
-    public Store(User owner, String storeName, String address, String businessInfo, String image, Boolean isConfirmed, Integer subscriptionCount) {
+    public Cafe(User owner, String cafeName, String address, String businessInfo, String image, Boolean isConfirmed, Integer subscriptionCount) {
         this.owner = owner;
-        this.storeName = storeName;
+        this.cafeName = cafeName;
         this.address = address;
         this.businessInfo = businessInfo;
         this.image = image;
