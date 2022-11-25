@@ -33,4 +33,7 @@ public class Menu {
     @Column(columnDefinition = "TEXT")
     @NotNull
     private String menuInfo;
+
+    @Column(columnDefinition = "TEXT")
+    private String image;
 }
