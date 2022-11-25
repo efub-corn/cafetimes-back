@@ -12,12 +12,12 @@ public class EventResponseDto {
     private String cafeName;
     private String userName;
     private String menu;
-    private LocalDateTime pickupDate;
+    private LocalDateTime pickupTime;
 
     public EventResponseDto(Event event){
         this.cafeName = event.getSubscription().getCafe().getCafeName();
         this.userName = event.getSubscription().getUser().getNickname();
         this.menu = event.getSubscription().getMenu();
-        this.pickupDate = event.getPickupDate();
+        this.pickupTime = event.getPickupTime();
     }
 }

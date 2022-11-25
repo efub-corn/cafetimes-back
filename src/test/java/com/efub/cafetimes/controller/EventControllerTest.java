@@ -86,7 +86,7 @@ class EventControllerTest {
     @DisplayName("주문하기 성공")
     void order() throws Exception {
         //given
-        EventRequestDto eventRequestDto = new EventRequestDto(1L, 1L, LocalDateTime.now(), LocalDateTime.now(), true, "iceice");
+        EventRequestDto eventRequestDto = new EventRequestDto(1L, 1L, LocalDateTime.now(), true, "iceice");
 
         //when, then
         mvc.perform(post("/events")
@@ -101,7 +101,7 @@ class EventControllerTest {
     @DisplayName("사장님 주문 내역 세부사항 조회하기 성공")
     void orderDetails() throws Exception {
         //given
-        Event event = new Event(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
+        Event event = new Event(subscription, cafe1.getId(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
 
         EventDetailDto response = new EventDetailDto(true, "ice ice");
         Mockito.when(eventService.findOrderDetail(event.getId())).thenReturn(response);

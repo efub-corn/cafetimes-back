@@ -74,7 +74,7 @@ public class EventService {
         Subscription subscription = findSubscriptionEntity(eventRequestDto.getSubscriptionId());
         return com.efub.cafetimes.domain.Event.builder()
                 .subscription(subscription)
-                .pickupDate(eventRequestDto.getPickupDate())
+                .cafeId(eventRequestDto.getCafeId())
                 .pickupTime(eventRequestDto.getPickupTime())
                 .isIce(eventRequestDto.getIsIce())
                 .requestInfo(eventRequestDto.getRequestInfo())

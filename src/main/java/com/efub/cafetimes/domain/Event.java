@@ -26,10 +26,6 @@ public class Event {
 
     @Column
     @NotNull
-    private LocalDateTime pickupDate;
-
-    @Column
-    @NotNull
     private LocalDateTime pickupTime;
 
     @Column
@@ -42,10 +38,9 @@ public class Event {
     private Boolean isDone;
 
     @Builder
-    public Event(Subscription subscription, Long cafeId, LocalDateTime pickupDate, LocalDateTime pickupTime, Boolean isIce, String requestInfo, Boolean isDone){
+    public Event(Subscription subscription, Long cafeId, LocalDateTime pickupTime, Boolean isIce, String requestInfo, Boolean isDone){
         this.subscription = subscription;
         this.cafeId = cafeId;
-        this.pickupDate = pickupDate;
         this.pickupTime = pickupTime;
         this.isIce = isIce;
         this.requestInfo = requestInfo;

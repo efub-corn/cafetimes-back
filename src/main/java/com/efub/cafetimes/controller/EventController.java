@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class EventController {
     private final EventService eventService;
 
-    @PostMapping()
+    @PostMapping("")
     public GeneralResponseDto order(@RequestBody EventRequestDto eventRequestDto){
         eventService.order(eventRequestDto);
         return new GeneralResponseDto("주문 완료되었습니다.");
     }
 
-    @GetMapping()
+    @GetMapping("")
     public EventListDto orders(@AuthenticationPrincipal UserPrincipal userPrincipal){
         return eventService.findOrders(userPrincipal.getId());
     }

@@ -84,13 +84,12 @@ class EventServiceTest {
 
     @Test
     @DisplayName("구독권 사용해서 주문하기 성공 테스트")
-    void order() {
-        Event event = new Event(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
+    void 주문하기() {
+        Event event = new Event(subscription, cafe1.getId(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
 
         //given
         EventRequestDto eventRequestDto = EventRequestDto.builder()
                 .subscriptionId(1L)
-                .pickupDate(LocalDateTime.now())
                 .pickupTime(LocalDateTime.now())
                 .isIce(true)
                 .requestInfo("얼음 많이 주세요.")
@@ -110,12 +109,12 @@ class EventServiceTest {
 
     @Test
     @DisplayName("사장님이 주문 리스트 확인하기 테스트")
-    void findOrders() {
+    void 주문리스트_확인하기() {
         //given
         List<Event> list = new ArrayList<>();
         List<Cafe> cafes = new ArrayList<>();
-        Event event1 = new Event(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
-        Event event2 = new Event(subscription, cafe1.getId(), LocalDateTime.now(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
+        Event event1 = new Event(subscription, cafe1.getId(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
+        Event event2 = new Event(subscription, cafe1.getId(), LocalDateTime.now(), true, "얼음 많이 주세요.", false);
         list.add(event1);
         list.add(event2);
         cafes.add(cafe1);
