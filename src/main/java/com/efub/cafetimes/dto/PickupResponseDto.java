@@ -8,16 +8,15 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class EventResponseDto {
+public class PickupResponseDto {
     private String cafeName;
-    private String userName;
     private String menu;
     private LocalDateTime pickupTime;
 
-    public EventResponseDto(Event event){
+    public PickupResponseDto(Event event){
         this.cafeName = event.getSubscription().getMenu().getCafe().getCafeName();
-        this.userName = event.getSubscription().getUser().getNickname();
         this.menu = event.getSubscription().getMenu().getMenuName();
         this.pickupTime = event.getPickupTime();
     }
+
 }

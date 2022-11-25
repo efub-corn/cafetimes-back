@@ -1,23 +1,14 @@
 package com.efub.cafetimes.controller;
 
-<<<<<<< HEAD
 import com.efub.cafetimes.domain.UserPrincipal;
-import com.efub.cafetimes.dto.GeneralMessageResponseDto;
-import com.efub.cafetimes.dto.SubscriptionResponseDto;
-=======
-import com.efub.cafetimes.domain.User;
-import com.efub.cafetimes.domain.UserPrincipal;
-import com.efub.cafetimes.dto.DeleteResponseDto;
->>>>>>> dev
-import com.efub.cafetimes.dto.UserResponseDto;
+import com.efub.cafetimes.dto.*;
 import com.efub.cafetimes.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-<<<<<<< HEAD
 import org.springframework.web.multipart.MultipartFile;
-=======
->>>>>>> dev
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -36,7 +27,6 @@ public class UserController {
     }
 
     @DeleteMapping("/account")
-<<<<<<< HEAD
     public GeneralMessageResponseDto deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         userService.deleteUser(userPrincipal.getId());
         return new GeneralMessageResponseDto("탈퇴 되었습니다.");
@@ -49,15 +39,13 @@ public class UserController {
     }
 
     @GetMapping("/mySubscription")
-    public SubscriptionResponseDto userSubscriptionDetails(@AuthenticationPrincipal UserPrincipal userPrincipal){
+    public List<SubscriptionResponseDto> userSubscriptionDetails(@AuthenticationPrincipal UserPrincipal userPrincipal){
         return userService.findSubscriptionInfo(userPrincipal.getId());
     }
 
-
-=======
-    public DeleteResponseDto deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        userService.deleteUser(userPrincipal.getId());
-        return new DeleteResponseDto("탈퇴 되었습니다.");
+    @GetMapping("/pickup")
+    public List<PickupResponseDto> userPickuplist(@AuthenticationPrincipal UserPrincipal userPrincipal){
+        return userService.findPickupList(userPrincipal.getId());
     }
->>>>>>> dev
+
 }

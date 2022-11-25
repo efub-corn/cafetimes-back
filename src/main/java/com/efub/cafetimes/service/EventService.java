@@ -46,7 +46,7 @@ public class EventService {
         List<EventResponseDto> events = new ArrayList<>();
         List<Cafe> cafes = cafeRepository.findByOwner(findUserEntity(userId));
 
-        cafes.stream().forEach(
+        cafes.forEach(
                 cafe -> {
                     List<Event> eventList = eventRepository.findByCafeId(cafe.getId());
                     for(Event event : eventList) {
