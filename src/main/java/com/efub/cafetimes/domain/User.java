@@ -20,9 +20,9 @@ import java.util.Collections;
 @Table(name="user")
 public class User extends BaseEntity {
 
-    @Id
+    @Id @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @Column
     private Long kakaoId;
@@ -55,7 +55,7 @@ public class User extends BaseEntity {
         this.role = authority.getValue();
     }
 
-    public User upadate(String nickname, String image){
+    public User update(String nickname, String image){
         this.nickname = nickname;
         this.image = image;
 
@@ -64,5 +64,6 @@ public class User extends BaseEntity {
 
     public void updateRole(Authority authority){
         this.role = authority.getValue();
+
     }
 }

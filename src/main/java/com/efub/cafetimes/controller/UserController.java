@@ -1,14 +1,23 @@
 package com.efub.cafetimes.controller;
 
+<<<<<<< HEAD
 import com.efub.cafetimes.domain.UserPrincipal;
 import com.efub.cafetimes.dto.GeneralMessageResponseDto;
 import com.efub.cafetimes.dto.SubscriptionResponseDto;
+=======
+import com.efub.cafetimes.domain.User;
+import com.efub.cafetimes.domain.UserPrincipal;
+import com.efub.cafetimes.dto.DeleteResponseDto;
+>>>>>>> dev
 import com.efub.cafetimes.dto.UserResponseDto;
 import com.efub.cafetimes.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+<<<<<<< HEAD
 import org.springframework.web.multipart.MultipartFile;
+=======
+>>>>>>> dev
 
 @RestController
 @RequestMapping("/users")
@@ -27,6 +36,7 @@ public class UserController {
     }
 
     @DeleteMapping("/account")
+<<<<<<< HEAD
     public GeneralMessageResponseDto deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         userService.deleteUser(userPrincipal.getId());
         return new GeneralMessageResponseDto("탈퇴 되었습니다.");
@@ -44,4 +54,10 @@ public class UserController {
     }
 
 
+=======
+    public DeleteResponseDto deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        userService.deleteUser(userPrincipal.getId());
+        return new DeleteResponseDto("탈퇴 되었습니다.");
+    }
+>>>>>>> dev
 }
