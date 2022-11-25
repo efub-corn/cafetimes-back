@@ -51,7 +51,7 @@ public class OAuthUserService extends DefaultOAuth2UserService {
             //회원가입
             return userRepository.save(attributes.toEntity());
         } else {
-            user.upadate(attributes.getNickname(), attributes.getImage());
+            user.update(attributes.getNickname(), attributes.getImage());
             return user;
         }
     }
