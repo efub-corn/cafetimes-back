@@ -11,14 +11,15 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cafe extends BaseEntity{
-    @Id
+@Table(name="cafe")
+public class Cafe {
+    @Id @Column(name="cafe_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storeId;
+    private Long id;
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User owner;
 
     @Column(columnDefinition = "TEXT")
