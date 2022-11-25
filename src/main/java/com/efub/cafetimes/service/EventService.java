@@ -72,7 +72,7 @@ public class EventService {
 
     private Event toOrderEntity(EventRequestDto eventRequestDto){
         Subscription subscription = findSubscriptionEntity(eventRequestDto.getSubscriptionId());
-        return com.efub.cafetimes.domain.Event.builder()
+        return Event.builder()
                 .subscription(subscription)
                 .cafeId(eventRequestDto.getCafeId())
                 .pickupTime(eventRequestDto.getPickupTime())

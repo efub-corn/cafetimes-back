@@ -27,12 +27,8 @@ public class Subscription {
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name="cafe_id")
-    private Cafe cafe;
-
-    @NotNull
-    @Column
-    private String menu;
+    @JoinColumn(name="menu_id")
+    private Menu menu;
 
     @NotNull
     @Column
@@ -51,9 +47,8 @@ public class Subscription {
     private LocalDateTime expirationDate; //구독 만료 날짜 = 구독 시작 날짜 + 구독 기한
 
     @Builder
-    public Subscription(User user, Cafe cafe, String menu, String size, Integer currentCnt, Integer totalCnt, LocalDateTime expirationDate){
+    public Subscription(User user, Menu menu, String size, Integer currentCnt, Integer totalCnt, LocalDateTime expirationDate){
         this.user = user;
-        this.cafe = cafe;
         this.menu = menu;
         this.size = size;
         this.currentCnt = currentCnt;
