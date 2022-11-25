@@ -2,6 +2,7 @@ package com.efub.cafetimes.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,4 +37,13 @@ public class Menu {
 
     @Column(columnDefinition = "TEXT")
     private String image;
+
+    @Builder
+    public Menu(Cafe cafe, String menuName, Integer price, String menuInfo, String image){
+        this.cafe = cafe;
+        this.menuName = menuName;
+        this.price = price;
+        this.menuInfo = menuInfo;
+        this.image = image;
+    }
 }

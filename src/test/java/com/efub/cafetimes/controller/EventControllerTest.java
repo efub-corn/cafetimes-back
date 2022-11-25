@@ -1,10 +1,7 @@
 package com.efub.cafetimes.controller;
 
 import com.efub.cafetimes.config.Authority;
-import com.efub.cafetimes.domain.Cafe;
-import com.efub.cafetimes.domain.Event;
-import com.efub.cafetimes.domain.Subscription;
-import com.efub.cafetimes.domain.User;
+import com.efub.cafetimes.domain.*;
 import com.efub.cafetimes.dto.*;
 import com.efub.cafetimes.service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +44,7 @@ class EventControllerTest {
 
     User owner, customer;
     Cafe cafe1, cafe2;
+    Menu menu;
     Subscription subscription;
 
     @BeforeEach
@@ -65,15 +63,22 @@ class EventControllerTest {
                 .cafeName("cafe1")
                 .owner(owner).build();
 
+        menu = Menu.builder()
+                .cafe(cafe1)
+                .menuName("아메리카노")
+                .menuInfo("국내 최고 원두를 사용했습니다.")
+                .price(3000)
+                .build();
+
         cafe2 = Cafe.builder()
                 .cafeName("cafe2")
                 .owner(owner).build();
 
+
         subscription = Subscription.builder()
                 .user(customer)
-                .cafe(cafe1)
+                .menu(menu)
                 .currentCnt(5)
-                .menu("아메리카노")
                 .expirationDate(LocalDateTime.MAX)
                 .size("L")
                 .totalCnt(10)

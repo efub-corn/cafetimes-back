@@ -50,8 +50,8 @@ public class EventService {
                 cafe -> {
                     List<Event> eventList = eventRepository.findByCafeId(cafe.getId());
                     for(Event event : eventList) {
+                        if(event.getIsDone()) continue;
                         events.add(new EventResponseDto(event));
-
                     }
                 }
         );
