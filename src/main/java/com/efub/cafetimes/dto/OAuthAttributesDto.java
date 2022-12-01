@@ -12,7 +12,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class OAuthAttributesDto {
     private Map<String, Object> attributes;
-    private Long kakaoId;
     private String registrationId; //서비스 구분
     private String nameAttributeKey;
     private String nickname;
@@ -20,9 +19,8 @@ public class OAuthAttributesDto {
     private String image;
 
     @Builder
-    public OAuthAttributesDto(Map<String, Object> attributes, Long kakaoId, String registrationId, String nameAttributeKey, String nickname, String email, String image){
+    public OAuthAttributesDto(Map<String, Object> attributes, String registrationId, String nameAttributeKey, String nickname, String email, String image){
         this.attributes = attributes;
-        this.kakaoId = kakaoId;
         this.registrationId = registrationId;
         this.nameAttributeKey = nameAttributeKey;
         this.nickname = nickname;
@@ -31,7 +29,12 @@ public class OAuthAttributesDto {
     }
 
     public static OAuthAttributesDto of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
-        return ofKakao(registrationId, "id", attributes);
+        switch (registrationId) {
+            case "kakao":
+                return ofKakao(registrationId, "id", attributes);
+            default:
+                throw new RuntimeException();
+        }
     }
 
     public static OAuthAttributesDto ofKakao(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
@@ -41,7 +44,6 @@ public class OAuthAttributesDto {
         Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
 
         return OAuthAttributesDto.builder()
-                .kakaoId((Long) attributes.get("id"))
                 .registrationId(registrationId)
                 .nameAttributeKey(userNameAttributeName)
                 .nickname((String) kakaoProfile.get("nickname"))
@@ -53,7 +55,7 @@ public class OAuthAttributesDto {
 
     public User toEntity() {
         User user = User.builder()
-                .kakaoId(kakaoId)
+                .attributeKey(nameAttributeKey)
                 .nickname(nickname)
                 .image(image)
                 .email(email)

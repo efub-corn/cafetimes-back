@@ -25,7 +25,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column
-    private Long kakaoId;
+    private String attributeKey;
 
     @Column
     @NotNull
@@ -46,8 +46,8 @@ public class User extends BaseEntity {
     private String password;
 
     @Builder
-    public User(Long kakaoId, String nickname, String email, String password, String image, Authority authority){
-        this.kakaoId = kakaoId;
+    public User(String attributeKey, String nickname, String email, String password, String image, Authority authority){
+        this.attributeKey = attributeKey;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
