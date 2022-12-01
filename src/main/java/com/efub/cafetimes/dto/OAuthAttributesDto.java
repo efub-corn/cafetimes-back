@@ -31,7 +31,7 @@ public class OAuthAttributesDto {
     public static OAuthAttributesDto of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
         switch (registrationId) {
             case "kakao":
-                return ofKakao(registrationId, "id", attributes);
+                return ofKakao(registrationId, userNameAttributeName, attributes);
             default:
                 throw new RuntimeException();
         }
